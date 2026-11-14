@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anglais – travail sur les erreurs du DS ELVi</title>
+<style>
+  :root {
+    --ink: #1d2733; --muted: #5b6776; --line: #d9dee5; --paper: #fbfaf7;
+    --accent: #1f4e79; --accent-soft: #e8f0f8; --ok: #1e7a46; --ok-soft: #e4f4ea;
+    --ko: #b3261e; --ko-soft: #fbe9e7; --warn: #8a5a00;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+  header { background: var(--accent); color: #fff; padding: 2.2rem 1.2rem 1.6rem; }
+  header .wrap { max-width: 860px; margin: 0 auto; }
+  header h1 { margin: 0 0 .4rem; font-size: 1.7rem; line-height: 1.2; font-weight: 600; }
+  header p { margin: 0; opacity: .9; font-size: .98rem; }
+  nav { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid var(--line); }
+  nav .wrap { max-width: 860px; margin: 0 auto; display: flex; gap: .3rem; overflow-x: auto; padding: .5rem 1rem; }
+  nav a { font: 600 .82rem/1 system-ui, sans-serif; color: var(--accent); text-decoration: none;
+    padding: .45rem .7rem; border-radius: 99px; white-space: nowrap; background: var(--accent-soft); }
+  nav a:hover { background: #d5e3f1; }
+  main { max-width: 860px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+  section { margin-top: 2.4rem; scroll-margin-top: 3.5rem; }
+  h2 { font-size: 1.35rem; margin: 0 0 .8rem; color: var(--accent); }
+  .rule { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: .9rem 1.1rem;
+    border-radius: 0 8px 8px 0; margin-bottom: 1.2rem; }
+  .rule p { margin: .35rem 0; }
+  .rule .ds { margin-top: .6rem; padding-top: .6rem; border-top: 1px dashed #b8c8da; }
+  .tag { font: 700 .72rem/1 system-ui, sans-serif; background: var(--accent); color: #fff; padding: .2rem .4rem;
+    border-radius: 4px; vertical-align: 2px; margin-right: .3rem; }
+  table.ref { border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-size: .95rem; background: #fff; }
+  table.ref th, table.ref td { border: 1px solid var(--line); padding: .4rem .6rem; text-align: left; vertical-align: top; }
+  table.ref th { background: #eef2f6; font-family: system-ui, sans-serif; font-size: .85rem; }
+  .ex { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem 1.1rem; margin-bottom: 1.4rem; }
+  .ex h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+  .ex .consigne { margin: 0 0 .8rem; color: var(--muted); font-style: italic; }
+  ol.items { margin: 0; padding-left: 1.6rem; }
+  ol.items > li { margin: .7rem 0; padding-left: .2rem; }
+  .prompt { display: block; margin-bottom: .3rem; }
+  input[type=text] { width: 100%; font: inherit; font-size: 1rem; padding: .45rem .6rem; border: 1px solid #b9c2cd;
+    border-radius: 6px; background: #fff; color: var(--ink); }
+  input[type=text].gap { width: 9rem; display: inline-block; padding: .2rem .4rem; margin: 0 .2rem; }
+  textarea { width: 100%; font: inherit; font-size: 1rem; padding: .5rem .6rem; border: 1px solid #b9c2cd;
+    border-radius: 6px; min-height: 4.2rem; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid #8fb3d6; outline-offset: 1px; }
+  .choices { display: inline-flex; gap: .3rem; flex-wrap: wrap; }
+  .choices label { font-family: system-ui, sans-serif; font-size: .9rem; border: 1px solid #b9c2cd; border-radius: 99px;
+    padding: .2rem .7rem; cursor: pointer; background: #fff; user-select: none; }
+  .choices input { position: absolute; opacity: 0; pointer-events: none; }
+  .choices input:checked + span { font-weight: 700; }
+  .choices label:has(input:checked) { background: var(--accent); color: #fff; border-color: var(--accent); }
+  select { font: inherit; font-size: .95rem; padding: .15rem .3rem; border: 1px solid #b9c2cd; border-radius: 6px; background: #fff; margin: 0 .15rem; }
+  li.ok input[type=text], li.ok select { border-color: var(--ok); background: var(--ok-soft); }
+  li.ko input[type=text], li.ko select { border-color: var(--ko); background: var(--ko-soft); }
+  li.ok .choices label:has(input:checked) { background: var(--ok); border-color: var(--ok); }
+  li.ko .choices label:has(input:checked) { background: var(--ko); border-color: var(--ko); }
+  .fb { font-family: system-ui, sans-serif; font-size: .88rem; margin-top: .3rem; }
+  .fb .good { color: var(--ok); font-weight: 600; }
+  .fb .bad { color: var(--ko); font-weight: 600; }
+  .fb .hint { color: var(--warn); display: block; margin-top: .15rem; }
+  .bar { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
+  button { font: 600 .9rem/1 system-ui, sans-serif; padding: .6rem 1rem; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; cursor: pointer; }
+  button.ghost { background: #fff; color: var(--accent); }
+  button:hover { filter: brightness(1.08); }
+  .score { font: 700 .95rem system-ui, sans-serif; margin-left: auto; }
+  .model { display: none; margin-top: .5rem; padding: .6rem .8rem; background: #f4f7fa; border-radius: 6px; font-size: .95rem; }
+  .model.show { display: block; }
+  .model .why { color: var(--muted); font-size: .88rem; font-family: system-ui, sans-serif; }
+  .checklist { list-style: none; padding: 0; margin: .4rem 0 0; }
+  .checklist li { margin: .45rem 0; }
+  .checklist label { display: flex; gap: .55rem; align-items: flex-start; cursor: pointer; }
+  .checklist input { margin-top: .35rem; width: 1rem; height: 1rem; flex: none; }
+  .total { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--line); padding: .6rem 1rem;
+    font: 600 .9rem system-ui, sans-serif; text-align: center; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1rem 2rem; }
+  em.en { font-style: italic; }
+  @media (max-width: 560px) { body { font-size: 16px; } header h1 { font-size: 1.4rem; } input[type=text].gap { width: 7rem; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Anglais – travail sur les erreurs du DS ELVi</h1>
+  <p>Chaque partie commence par un rappel. Les exemples marqués <span class="tag" style="background:#fff;color:var(--accent)">DS</span> viennent de tes copies. Réponds, puis clique sur « Vérifier ».</p>
+</div></header>
+
+<nav><div class="wrap">
+  <a href="#s1">1. Modaux</a><a href="#s2">2. Questions</a><a href="#s3">3. Accords</a><a href="#s4">4. Prépositions</a>
+  <a href="#s5">5. Gallicismes</a><a href="#s6">6. Articles</a><a href="#s7">7. Thème</a><a href="#s8">8. Méthode</a>
+</div></nav>
+
+<main>
+
+<section id="s1">
+  <h2>1. Modal + base verbale</h2>
+  <div class="rule">
+    <p><b>Règle.</b> Après un modal (<em>can, could, may, might, must, shall, should, will, would</em>), le verbe est <b>toujours à la base verbale</b> : pas de <em>-s</em>, pas de <em>-ed</em>, pas de <em>to</em>.</p>
+    <p><em>AI <b>can create</b> inequalities. – Students <b>could understand</b> better. – Teachers <b>must adapt</b>.</em></p>
+    <p>Même règle après <em>how to, what to, where to</em> : <em>They don't know <b>how to use</b> it.</em></p>
+    <p>Pour le passé d'un modal : modal + <em>have</em> + participe passé : <em>She <b>should have asked</b> for help.</em></p>
+    <p class="ds"><span class="tag">DS</span> <em>can creates</em> → <b>can create</b> ; <em>can cures</em> → <b>can cure</b> ; <em>could better understood</em> → <b>could understand … better</b> ; <em>how to used</em> → <b>how to use</b>.</p>
+  </div>
+  <div class="ex" id="ex1"></div>
+</section>
+
+<section id="s2">
+  <h2>2. Questions et propositions en wh-</h2>
+  <div class="rule">
+    <p><b>Question.</b> On garde l'ordre sujet + verbe + complément et on <b>ajoute un auxiliaire à gauche du sujet</b> (<em>do, does, did</em>, un modal, <em>have</em>…). Pour une question ouverte, on ajoute en plus un <b>mot interrogatif, encore plus à gauche</b>.</p>
+    <p><em>You live in Paris.</em> → <em><b>Do</b> you live in Paris?</em> → <em><b>Where do</b> you live?</em> – <em>We can study without AI.</em> → <em><b>How can</b> we study without AI?</em></p>
+    <p><b>Deux cas particuliers.</b> <em>Be</em> est son propre auxiliaire : c'est lui qui passe à gauche du sujet (<em>AI is a threat.</em> → <em><b>To what extent is</b> AI a threat?</em>). Question sur le sujet : le mot interrogatif prend la place du sujet, on n'ajoute rien (<em><b>Who uses</b> AI?</em> et non <em>Who does use AI?</em>).</p>
+    <p><b>Proposition en wh- après un verbe</b> (<em>depend on, know, wonder, explain, show…</em>) : ce n'est <b>pas une question</b>, mais une partie d'une phrase affirmative. Elle garde donc l'ordre de la phrase affirmative : <b>rien à gauche du sujet</b>, pas de <em>do</em>, pas de point d'interrogation.</p>
+    <p><em>It depends on where <b>you live</b>. – The article shows how <b>we can study</b> without AI. – We don't know <b>whether AI is</b> a threat.</em></p>
+    <p class="ds"><span class="tag">DS</span> <em>depends on where are you living</em> → <b>where you live</b> ; <em>how can we study</em> → <b>how we can study</b> ; <em>how can they use AI</em> → <b>how they can use AI</b> ; <em>To what extent AI is a threat … ?</em> → <b>To what extent is AI a threat … ?</b></p>
+  </div>
+  <div class="ex" id="ex2"></div>
+  <div class="ex" id="ex3"></div>
+</section>
+
+<section id="s3">
+  <h2>3. Accords et formes</h2>
+  <div class="rule">
+    <p><b>3e personne du singulier au présent</b> : <em>-s</em> obligatoire. <em>The cartoon <b>shows</b> two pupils. – Document 2 <b>underlines</b> … – He <b>teaches</b> history.</em></p>
+    <p><b>Other / others</b> : <em>other</em> est un adjectif <b>invariable</b> devant un nom (<em>other teachers</em>) ; <em>others</em> est un pronom, employé seul (<em>Some agree; others do not.</em>).</p>
+    <p><b>Fewer / less</b> : <em>fewer</em> + nom pluriel dénombrable (<em>fewer abilities</em>) ; <em>less</em> + indénombrable (<em>less time</em>).</p>
+    <p><b>Indénombrables</b> : <em>homework, information, advice, knowledge, research, progress</em> – jamais de <em>-s</em>, verbe au singulier.</p>
+    <p class="ds"><span class="tag">DS</span> <em>Others teachers</em> → <b>Other teachers</b> ; <em>less abilities</em> → <b>fewer abilities</b> ; <em>homeworks</em> → <b>homework</b> ; <em>he teachs</em> → <b>he teaches</b> ; <em>a cartoon which separate</em> → <b>which separates</b> ; <em>other teachers underscores</em> → <b>underscore</b>.</p>
+  </div>
+  <div class="ex" id="ex4"></div>
+</section>
+
+<section id="s4">
+  <h2>4. Prépositions</h2>
+  <div class="rule">
+    <p>Une préposition se retient <b>avec le mot qui la commande</b>. À apprendre par cœur :</p>
+    <p><em>an impact <b>on</b> – dependent <b>on</b> / dependence <b>on</b> – to depend <b>on</b> – access <b>to</b> – threatened <b>by</b></em> (une menace) / <em><b>with</b></em> (une sanction : <em>threatened with closure</em>) <em>– <b>in</b> a smarter way – to prevent sb <b>from</b> doing – to warn sb <b>against / about</b> – to focus <b>on</b></em>.</p>
+    <p class="ds"><span class="tag">DS</span> <em>an impact the future</em> → <b>an impact on</b> ; <em>threatened of job displacement</em> → <b>threatened by</b> ; <em>use it a smarter way</em> → <b>in a smarter way</b>.</p>
+  </div>
+  <div class="ex" id="ex5"></div>
+</section>
+
+<section id="s5">
+  <h2>5. Gallicismes, faux amis et confusions</h2>
+  <div class="rule">
+    <p>Un mot qui « ressemble » au français est souvent faux. En cas de doute, <b>contourner</b> avec un mot simple et sûr plutôt que de calquer.</p>
+    <table class="ref">
+      <tr><th>Ne pas écrire (DS)</th><th>Écrire</th></tr>
+      <tr><td><em>connexion</em></td><td><b>connection</b> (<em>an internet connection</em>)</td></tr>
+      <tr><td><em>IA</em></td><td><b>AI</b></td></tr>
+      <tr><td><em>dependance</em> / <em>dependant on</em></td><td><b>dependence</b> (nom) / <b>dependent on</b> (adjectif)</td></tr>
+      <tr><td><em>explication</em></td><td><b>explanation</b></td></tr>
+      <tr><td><em>a price</em> (une récompense)</td><td><b>a prize</b> (<em>the Nobel Prize</em>) – <em>price</em> = le prix à payer</td></tr>
+      <tr><td><em>pupils</em> (à l'université)</td><td><b>students</b> ; <em>pupils</em> = jeunes élèves</td></tr>
+      <tr><td><em>personal using</em></td><td><b>personal use</b> (nom, pas de <em>-ing</em>)</td></tr>
+      <tr><td><em>make a doubt on</em></td><td><b>cast doubt on</b> / <b>call into question</b></td></tr>
+      <tr><td><em>ends by draw</em></td><td><b>ends by drawing</b> / <b>ends up drawing</b></td></tr>
+      <tr><td><em>a threaten</em></td><td><b>a threat</b> (nom) / <em>to threaten</em> (verbe)</td></tr>
+      <tr><td><em>leaving</em> (habiter)</td><td><b>living</b> – <em>to live</em> = habiter ; <em>to leave</em> = partir, quitter</td></tr>
+    </table>
+  </div>
+  <div class="ex" id="ex6"></div>
+</section>
+
+<section id="s6">
+  <h2>6. L'article : <em>the</em> ou Ø ?</h2>
+  <div class="rule">
+    <p><b>Règle de base.</b> Un nom <b>abstrait, indénombrable ou pluriel pris au sens général</b> ne prend <b>pas d'article</b> (Ø), alors que le français met un article défini.</p>
+    <p><em>Ø Globalisation has deepened Ø inequality.</em> (La mondialisation a creusé les inégalités.) – <em>Ø Students often use AI.</em> (Les étudiants…)</p>
+    <p>On emploie <b>the</b> quand le nom est <b>déterminé</b> : précisé par un complément, déjà mentionné, ou unique dans la situation.</p>
+    <p><em><b>The</b> globalisation of trade began in the 19th century. – <b>The</b> students in my class all use AI.</em></p>
+    <p class="ds"><span class="tag">DS</span> <em>the access to AI</em> → <b>Ø access to AI</b> ; <em>cure the cancer</em> → <b>cure Ø cancer</b> ; diagnostic : <em>The globalisation has changed…</em> → <b>Ø Globalisation has changed…</b></p>
+  </div>
+  <div class="ex" id="ex7"></div>
+</section>
+
+<section id="s7">
+  <h2>7. Thème – mini-traduction</h2>
+  <div class="rule">
+    <p><b>Méthode.</b> Lire la phrase entière avant de traduire. Repérer le verbe principal et sa construction. Ne pas traduire mot à mot : se demander comment un anglophone le dirait. Si un mot manque, le contourner. Relire en vérifiant les points 1 à 6.</p>
+  </div>
+  <div class="ex" id="ex8"></div>
+</section>
+
+<section id="s8">
+  <h2>8. Méthode – à vérifier avant de rendre</h2>
+  <div class="ex">
+    <h3>Résumé analytique comparatif</h3>
+    <ul class="checklist" data-key="m1">
+      <li><label><input type="checkbox">Ne pas recopier la question : y répondre dès l'introduction, avec une problématique.</label></li>
+      <li><label><input type="checkbox">Construire un plan comparatif (points communs / différences), pas un résumé document par document.</label></li>
+      <li><label><input type="checkbox">Présenter chaque personne citée en quelques mots (<em>Alex Karp, CEO of Palantir</em>).</label></li>
+      <li><label><input type="checkbox">Lister les idées principales des deux articles avant de rédiger, et vérifier qu'aucune n'est oubliée.</label></li>
+      <li><label><input type="checkbox">Respecter la longueur demandée et indiquer le nombre de mots.</label></li>
+    </ul>
+    <h3 style="margin-top:1rem">Essai</h3>
+    <ul class="checklist" data-key="m2">
+      <li><label><input type="checkbox">Prévoir un temps fixe pour l'essai et s'y tenir : un essai inachevé ou trop court perd beaucoup de points.</label></li>
+      <li><label><input type="checkbox">Introduction avec problématique, deux ou trois parties, transitions, conclusion.</label></li>
+      <li><label><input type="checkbox">Indiquer le nombre de mots à la fin.</label></li>
+    </ul>
+    <h3 style="margin-top:1rem">Relecture (5 minutes)</h3>
+    <ul class="checklist" data-key="m3">
+      <li><label><input type="checkbox">Chaque modal est-il suivi d'une base verbale ?</label></li>
+      <li><label><input type="checkbox">Les propositions en wh- après un verbe gardent-elles l'ordre sujet + verbe ?</label></li>
+      <li><label><input type="checkbox">Les verbes au présent ont-ils un <em>-s</em> à la 3e personne ?</label></li>
+      <li><label><input type="checkbox">Les noms pris au sens général sont-ils sans article ?</label></li>
+      <li><label><input type="checkbox">Les prépositions et les mots « transparents » sont-ils sûrs ?</label></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+<div class="total" id="total">Score total : –</div>
+<footer>Les réponses sont enregistrées dans ce navigateur. <button class="ghost" id="resetAll" style="margin-left:.4rem">Tout effacer</button></footer>
+
+<script>
+/* ---------- Données ---------- */
+const EX = [
+ { id: 'ex1', title: 'Exercice 1', type: 'rewrite',
+   consigne: 'Réécrire chaque phrase en la corrigeant.',
+   items: [
+    { q: 'AI can creates new forms of inequality.', a: ['AI can create new forms of inequality.'] },
+    { q: 'Thanks to AI, students could better understood the historical period.', a: ['Thanks to AI, students could understand the historical period better.', 'Thanks to AI, students could better understand the historical period.'] },
+    { q: 'Researchers hope AI will cures some cancers.', a: ['Researchers hope AI will cure some cancers.', 'Researchers hope that AI will cure some cancers.'] },
+    { q: 'Teachers must to adapt their methods.', a: ['Teachers must adapt their methods.', 'Teachers have to adapt their methods.'] },
+    { q: 'She should has asked her teacher for help.', a: ['She should have asked her teacher for help.'] },
+    { q: 'Many pupils don’t know how to used these tools properly.', a: ['Many pupils do not know how to use these tools properly.', 'Many pupils do not know how to properly use these tools.'] },
+    { q: 'The new rules might changes everything.', a: ['The new rules might change everything.'] },
+    { q: 'He can’t explains why the school banned AI.', a: ['He cannot explain why the school banned AI.'] },
+   ] },
+ { id: 'ex2', title: 'Exercice 2', type: 'rewrite', prefill: true, noQuestionMark: true,
+   consigne: 'Intégrer chaque question dans la phrase proposée (proposition en wh-). Compléter la phrase déjà commencée.',
+   items: [
+    { q: 'Where do you live?', start: 'It depends on ', a: ['It depends on where you live.'] },
+    { q: 'How can we study without AI?', start: 'The article shows ', a: ['The article shows how we can study without AI.'] },
+    { q: 'What do teachers think about it?', start: 'Nobody knows ', a: ['Nobody knows what teachers think about it.'] },
+    { q: 'Why did the city ban ChatGPT?', start: 'The author explains ', a: ['The author explains why the city banned ChatGPT.'] },
+    { q: 'Is AI a threat to education?', start: 'We don’t know ', a: ['We do not know whether AI is a threat to education.', 'We do not know if AI is a threat to education.'] },
+    { q: 'How much does the software cost?', start: 'I wonder ', a: ['I wonder how much the software costs.'] },
+   ] },
+ { id: 'ex3', title: 'Exercice 3', type: 'rewrite', needQuestionMark: true,
+   consigne: 'Écrire la question à partir des éléments donnés.',
+   items: [
+    { q: 'To what extent / AI / be / a threat to education', a: ['To what extent is AI a threat to education?'] },
+    { q: 'How / students / use / AI at home', a: ['How do students use AI at home?'] },
+    { q: 'Why / some teachers / prefer / to ban it', a: ['Why do some teachers prefer to ban it?'] },
+    { q: 'What / schools / can / do', a: ['What can schools do?'] },
+    { q: 'Who / use / AI the most', a: ['Who uses AI the most?'], why: 'Question sur le sujet : pas d’auxiliaire, et -s à la 3e personne.' },
+   ] },
+ { id: 'ex4', title: 'Exercice 4', type: 'choice',
+   consigne: 'Choisir la bonne forme.',
+   items: [
+    { before: '', opts: ['Other', 'Others'], a: 0, after: ' teachers disagree with this view.' },
+    { before: 'Some teachers welcome AI; ', opts: ['other', 'others'], a: 1, after: ' are worried.' },
+    { before: 'Students read ', opts: ['less', 'fewer'], a: 1, after: ' books than before.' },
+    { before: 'They spend ', opts: ['less', 'fewer'], a: 0, after: ' time reading.' },
+    { before: 'She asked AI to do her ', opts: ['homework', 'homeworks'], a: 0, after: '.' },
+    { before: 'The cartoon ', opts: ['show', 'shows'], a: 1, after: ' two pupils.' },
+    { before: 'Document 2 ', opts: ['underline', 'underlines'], a: 1, after: ' the risks.' },
+    { before: 'The information given by the school ', opts: ['is', 'are'], a: 0, after: ' reliable.' },
+   ] },
+ { id: 'ex5', title: 'Exercice 5', type: 'gap',
+   consigne: 'Compléter avec la préposition qui convient.',
+   items: [
+    { before: 'AI has a huge impact', after: 'education.', a: ['on'] },
+    { before: 'Many students have become dependent', after: 'AI.', a: ['on', 'upon'] },
+    { before: 'Thousands of jobs are threatened', after: 'automation.', a: ['by'] },
+    { before: 'Access', after: 'the internet is still unequal.', a: ['to'] },
+    { before: 'Teachers should warn students', after: 'the risks of AI.', a: ['against', 'about', 'of'] },
+    { before: 'The school bans phones to prevent students', after: 'cheating.', a: ['from'] },
+    { before: 'Some students use AI', after: 'a smarter way than others.', a: ['in'] },
+    { before: 'Success often depends', after: 'where you live.', a: ['on', 'upon'] },
+   ] },
+ { id: 'ex6', title: 'Exercice 6', type: 'gap', wide: true,
+   consigne: 'Traduire les mots entre parenthèses.',
+   items: [
+    { before: 'Rural pupils often lack a good internet', hint: '(connexion)', after: '.', a: ['connection'] },
+    { before: 'The teacher gave a clear', hint: '(explication)', after: '.', a: ['explanation'] },
+    { before: 'She won a', hint: '(prix)', after: 'for her research.', a: ['prize', 'award'] },
+    { before: 'The article warns against', hint: '(la dépendance)', after: 'on AI.', a: ['dependence', 'dependency', 'over-dependence', 'overdependence', 'reliance', 'over-reliance', 'overreliance'] },
+    { before: 'AI is widely used for', hint: '(un usage personnel)', after: '.', a: ['personal use', 'personal purposes'] },
+    { before: 'This study', hint: '(met en doute)', after: 'the benefits of AI.', a: ['calls into question', 'casts doubt on', 'questions', 'challenges', 'throws doubt on'] },
+    { before: 'Where do you', hint: '(habiter)', after: '?', a: ['live'] },
+    { before: 'Many experts see AI as', hint: '(une menace)', after: 'to jobs.', a: ['a threat', 'a danger', 'a risk'] },
+   ] },
+ { id: 'ex7', title: 'Exercice 7', type: 'article',
+   consigne: 'Choisir the ou Ø (pas d’article).',
+   items: [
+    { parts: ['', ' globalisation has deepened ', ' inequality.'], a: ['Ø', 'Ø'] },
+    { parts: ['', ' globalisation of trade began in the 19th century.'], a: ['the'] },
+    { parts: ['', ' students often use AI to do their homework.'], a: ['Ø'] },
+    { parts: ['', ' students in my class all use ChatGPT.'], a: ['the'] },
+    { parts: ['', ' access to AI depends on where you live.'], a: ['Ø'] },
+    { parts: ['', ' education is a key issue for ', ' young people.'], a: ['Ø', 'Ø'] },
+    { parts: ['', ' education of girls has improved in many countries.'], a: ['the'] },
+    { parts: ['AI could help doctors cure ', ' cancer.'], a: ['Ø'] },
+    { parts: ['', ' unemployment rose sharply last year.'], a: ['Ø'] },
+    { parts: ['', ' unemployment rate rose sharply last year.'], a: ['the'] },
+    { parts: ['', ' technology changes the way we learn.'], a: ['Ø'] },
+    { parts: ['', ' technology used in this school is outdated.'], a: ['the'] },
+   ] },
+ { id: 'ex8', title: 'Exercice 8', type: 'translate',
+   consigne: 'Traduire en anglais, puis cliquer sur « Voir une proposition » et vérifier ta traduction point par point.',
+   items: [
+    { q: 'Il est difficile de savoir dans quelle mesure l’IA menace l’enseignement.', m: 'It is difficult to know <b>to what extent AI threatens</b> education.', why: 'Proposition en wh- : rien à gauche du sujet. Ø devant <em>education</em>.' },
+    { q: 'Les élèves qui vivent à la campagne n’ont pas toujours accès à une bonne connexion.', m: 'Pupils who <b>live</b> in the countryside do not always have <b>access to</b> a good <b>connection</b>.', why: '<em>live / leave</em> ; <em>access to</em> ; <em>connection</em>.' },
+    { q: 'Certains professeurs craignent que les étudiants ne deviennent dépendants de l’IA.', m: 'Some teachers fear that students <b>may become dependent on</b> AI.', why: '<em>dependent on</em> ; modal + base verbale.' },
+    { q: 'L’IA pourrait aider les lycéens à mieux comprendre l’histoire.', m: 'AI <b>could help</b> high school students <b>understand</b> history <b>better</b>.', why: 'Modal + base verbale ; <em>help sb do</em> ; Ø devant <em>history</em>.' },
+    { q: 'Personne ne sait comment les écoles pourront utiliser ces outils.', m: 'Nobody knows <b>how schools will be able to use</b> these tools.', why: 'Proposition en wh- ; <em>can</em> au futur → <em>will be able to</em>.' },
+    { q: 'D’autres enseignants préfèrent mettre leurs élèves en garde contre les dangers de l’IA.', m: '<b>Other</b> teachers prefer <b>to warn</b> their pupils <b>against</b> the dangers of AI.', why: '<em>other</em> invariable ; <em>warn sb against</em> ; <em>the dangers of AI</em> (nom déterminé).' },
+   ] },
+];
+
+/* ---------- Outils ---------- */
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem('elvi-' + k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('elvi-' + k, JSON.stringify(v)); } catch (e) {} },
+  clear() { try { Object.keys(localStorage).filter(k => k.startsWith('elvi-')).forEach(k => localStorage.removeItem(k)); } catch (e) {} },
+};
+function norm(s) {
+  return (s || '').toLowerCase()
+    .replace(/[‘’ʼ`´]/g, "'").replace(/[“”]/g, '"')
+    .replace(/\bcan't\b/g, 'cannot').replace(/\bcan not\b/g, 'cannot')
+    .replace(/\bdon't\b/g, 'do not').replace(/\bdoesn't\b/g, 'does not').replace(/\bdidn't\b/g, 'did not')
+    .replace(/\bisn't\b/g, 'is not').replace(/\baren't\b/g, 'are not').replace(/\bwon't\b/g, 'will not')
+    .replace(/\bit's\b/g, 'it is').replace(/\bshouldn't\b/g, 'should not').replace(/\bcouldn't\b/g, 'could not')
+    .replace(/[.,;:!?"()]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const scores = {};
+
+/* ---------- Rendu ---------- */
+function render(ex) {
+  const box = document.getElementById(ex.id);
+  const saved = store.get(ex.id) || {};
+  let h = `<h3>${ex.title}</h3><p class="consigne">${ex.consigne}</p><ol class="items">`;
+  ex.items.forEach((it, i) => {
+    const v = saved[i];
+    if (ex.type === 'rewrite') {
+      const val = v != null ? v : (ex.prefill ? it.start : '');
+      h += `<li data-i="${i}"><span class="prompt">${esc(it.q)}</span>
+        <input type="text" autocomplete="off" spellcheck="false" value="${esc(val)}"><div class="fb"></div></li>`;
+    } else if (ex.type === 'choice') {
+      h += `<li data-i="${i}">${esc(it.before)}<span class="choices">` +
+        it.opts.map((o, j) => `<label><input type="radio" name="${ex.id}-${i}" value="${j}" ${v == j ? 'checked' : ''}><span>${esc(o)}</span></label>`).join('') +
+        `</span>${esc(it.after)}<div class="fb"></div></li>`;
+    } else if (ex.type === 'gap') {
+      h += `<li data-i="${i}">${esc(it.before)} ${it.hint ? `<em>${esc(it.hint)}</em>` : ''}
+        <input type="text" class="gap" ${ex.wide ? 'style="width:12rem"' : ''} autocomplete="off" spellcheck="false" value="${esc(v || '')}"> ${esc(it.after)}<div class="fb"></div></li>`;
+    } else if (ex.type === 'article') {
+      let s = '';
+      it.parts.forEach((p, k) => {
+        s += esc(p);
+        if (k < it.parts.length - 1) {
+          const cur = v ? v[k] : '';
+          const cap = k === 0 && p === '';
+          s += `<select data-k="${k}"><option value="">…</option><option value="Ø" ${cur === 'Ø' ? 'selected' : ''}>Ø</option><option value="the" ${cur === 'the' ? 'selected' : ''}>${cap ? 'The' : 'the'}</option></select>`;
+        }
+      });
+      h += `<li data-i="${i}">${s}<div class="fb"></div></li>`;
+    } else if (ex.type === 'translate') {
+      h += `<li data-i="${i}"><span class="prompt">${esc(it.q)}</span>
+        <textarea spellcheck="false">${esc(v || '')}</textarea>
+        <div class="model"><div>${it.m}</div><div class="why">À vérifier : ${it.why}</div></div></li>`;
+    }
+  });
+  h += '</ol><div class="bar">';
+  if (ex.type === 'translate') {
+    h += `<button data-act="show">Voir une proposition</button><button class="ghost" data-act="reset">Effacer</button>`;
+  } else {
+    h += `<button data-act="check">Vérifier</button><button class="ghost" data-act="solution">Voir les réponses</button><button class="ghost" data-act="reset">Effacer</button><span class="score"></span>`;
+  }
+  h += '</div>';
+  box.innerHTML = h;
+
+  box.addEventListener('input', () => save(ex));
+  box.addEventListener('change', () => save(ex));
+  box.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); check(ex); } });
+  box.querySelector('.bar').addEventListener('click', e => {
+    const act = e.target.dataset.act; if (!act) return;
+    if (act === 'check') check(ex);
+    if (act === 'solution') check(ex, true);
+    if (act === 'show') box.querySelectorAll('.model').forEach(m => m.classList.toggle('show'));
+    if (act === 'reset') { store.set(ex.id, {}); delete scores[ex.id]; render(ex); updateTotal(); }
+  });
+}
+
+function read(ex, li) {
+  if (ex.type === 'rewrite' || ex.type === 'gap') return li.querySelector('input').value;
+  if (ex.type === 'translate') return li.querySelector('textarea').value;
+  if (ex.type === 'choice') { const r = li.querySelector('input:checked'); return r ? +r.value : null; }
+  if (ex.type === 'article') return [...li.querySelectorAll('select')].map(s => s.value);
+}
+function save(ex) {
+  const box = document.getElementById(ex.id), data = {};
+  box.querySelectorAll('li[data-i]').forEach(li => data[li.dataset.i] = read(ex, li));
+  store.set(ex.id, data);
+}
+
+function check(ex, reveal = false) {
+  const box = document.getElementById(ex.id);
+  let ok = 0;
+  box.querySelectorAll('li[data-i]').forEach(li => {
+    const it = ex.items[li.dataset.i], v = read(ex, li), fb = li.querySelector('.fb');
+    let good = false, expected = '', hint = '';
+    if (ex.type === 'rewrite') {
+      good = it.a.some(a => norm(a) === norm(v));
+      expected = it.a[0];
+      if (ex.noQuestionMark && /\?\s*$/.test(v)) { good = false; hint = 'Pas de point d’interrogation : ce n’est pas une question.'; }
+      if (ex.needQuestionMark && good && !/\?\s*$/.test(v)) hint = 'N’oublie pas le point d’interrogation.';
+    } else if (ex.type === 'gap') {
+      good = it.a.some(a => norm(a) === norm(v)); expected = it.a.join(' / ');
+    } else if (ex.type === 'choice') {
+      good = v === it.a; expected = it.opts[it.a];
+    } else if (ex.type === 'article') {
+      good = it.a.every((a, k) => v[k] === a); expected = it.a.join(' … ');
+    }
+    if (good) ok++;
+    li.classList.toggle('ok', good); li.classList.toggle('ko', !good);
+    const empty = v == null || (typeof v === 'string' && !v.trim()) || (Array.isArray(v) && v.some(x => !x));
+    if (good) fb.innerHTML = `<span class="good">✓ Correct</span>` + (it.why ? ` – ${it.why}` : '') + (hint ? `<span class="hint">${hint}</span>` : '');
+    else if (reveal || !empty) fb.innerHTML = `<span class="bad">✗</span> ${reveal || !empty ? 'Réponse attendue : <b>' + esc(expected) + '</b>' : ''}` + (it.why ? ` – ${it.why}` : '') + (hint ? `<span class="hint">${hint}</span>` : '');
+    else fb.innerHTML = `<span class="bad">À compléter</span>`;
+  });
+  scores[ex.id] = [ok, ex.items.length];
+  box.querySelector('.score').textContent = `${ok} / ${ex.items.length}`;
+  updateTotal();
+}
+function updateTotal() {
+  const v = Object.values(scores);
+  if (!v.length) { document.getElementById('total').textContent = 'Score total : –'; return; }
+  const ok = v.reduce((a, b) => a + b[0], 0), n = v.reduce((a, b) => a + b[1], 0);
+  document.getElementById('total').textContent = `Score total sur les exercices vérifiés : ${ok} / ${n}`;
+}
+
+/* Listes de méthode */
+document.querySelectorAll('.checklist').forEach(ul => {
+  const k = ul.dataset.key, saved = store.get(k) || [];
+  const boxes = ul.querySelectorAll('input');
+  boxes.forEach((b, i) => { b.checked = !!saved[i]; b.addEventListener('change', () => store.set(k, [...boxes].map(x => x.checked))); });
+});
+
+EX.forEach(render);
+document.getElementById('resetAll').addEventListener('click', () => {
+  if (!confirmReset()) return;
+  store.clear(); for (const k in scores) delete scores[k];
+  EX.forEach(render); document.querySelectorAll('.checklist input').forEach(b => b.checked = false); updateTotal();
+});
+function confirmReset() {
+  const b = document.getElementById('resetAll');
+  if (b.dataset.armed) { delete b.dataset.armed; b.textContent = 'Tout effacer'; return true; }
+  b.dataset.armed = '1'; b.textContent = 'Cliquer encore pour confirmer';
+  setTimeout(() => { delete b.dataset.armed; b.textContent = 'Tout effacer'; }, 3000);
+  return false;
+}
+</script>
+</body>
+</html>
