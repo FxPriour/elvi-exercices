@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Summary and essay – your mock exam (AI and education)</title>
+<style>
+  :root {
+    --ink: #1d2733; --muted: #5b6776; --line: #d9dee5; --paper: #fbfaf7;
+    --accent: #1f4e79; --accent-soft: #e8f0f8; --ok: #1e7a46; --ok-soft: #e4f4ea;
+    --ko: #b3261e; --ko-soft: #fbe9e7; --warn: #8a5a00;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+  header { background: var(--accent); color: #fff; padding: 2.2rem 1.2rem 1.6rem; }
+  header .wrap { max-width: 860px; margin: 0 auto; }
+  header h1 { margin: 0 0 .4rem; font-size: 1.7rem; line-height: 1.2; font-weight: 600; }
+  header p { margin: 0; opacity: .9; font-size: .98rem; }
+  nav { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid var(--line); }
+  nav .wrap { max-width: 860px; margin: 0 auto; display: flex; gap: .3rem; overflow-x: auto; padding: .5rem 1rem; }
+  nav a { font: 600 .82rem/1 system-ui, sans-serif; color: var(--accent); text-decoration: none;
+    padding: .45rem .7rem; border-radius: 99px; white-space: nowrap; background: var(--accent-soft); }
+  nav a:hover { background: #d5e3f1; }
+  main { max-width: 860px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+  section { margin-top: 2.4rem; scroll-margin-top: 3.5rem; }
+  h2 { font-size: 1.35rem; margin: 0 0 .8rem; color: var(--accent); }
+  .rule { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: .9rem 1.1rem;
+    border-radius: 0 8px 8px 0; margin-bottom: 1.2rem; }
+  .rule p { margin: .35rem 0; }
+  .rule .ds { margin-top: .6rem; padding-top: .6rem; border-top: 1px dashed #b8c8da; }
+  .tag { font: 700 .72rem/1 system-ui, sans-serif; background: var(--accent); color: #fff; padding: .2rem .4rem;
+    border-radius: 4px; vertical-align: 2px; margin-right: .3rem; }
+  table.ref { border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-size: .95rem; background: #fff; }
+  table.ref th, table.ref td { border: 1px solid var(--line); padding: .4rem .6rem; text-align: left; vertical-align: top; }
+  table.ref th { background: #eef2f6; font-family: system-ui, sans-serif; font-size: .85rem; }
+  .ex { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem 1.1rem; margin-bottom: 1.4rem; }
+  .ex h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+  .ex .consigne { margin: 0 0 .8rem; color: var(--muted); font-style: italic; }
+  ol.items { margin: 0; padding-left: 1.6rem; }
+  ol.items > li { margin: .7rem 0; padding-left: .2rem; }
+  .prompt { display: block; margin-bottom: .3rem; }
+  input[type=text] { width: 100%; font: inherit; font-size: 1rem; padding: .45rem .6rem; border: 1px solid #b9c2cd;
+    border-radius: 6px; background: #fff; color: var(--ink); }
+  input[type=text].gap { width: 9rem; display: inline-block; padding: .2rem .4rem; margin: 0 .2rem; }
+  textarea { width: 100%; font: inherit; font-size: 1rem; padding: .5rem .6rem; border: 1px solid #b9c2cd;
+    border-radius: 6px; min-height: 4.2rem; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid #8fb3d6; outline-offset: 1px; }
+  .choices { display: inline-flex; gap: .3rem; flex-wrap: wrap; }
+  .choices label { font-family: system-ui, sans-serif; font-size: .9rem; border: 1px solid #b9c2cd; border-radius: 99px;
+    padding: .2rem .7rem; cursor: pointer; background: #fff; user-select: none; }
+  .choices input { position: absolute; opacity: 0; pointer-events: none; }
+  .choices input:checked + span { font-weight: 700; }
+  .choices label:has(input:checked) { background: var(--accent); color: #fff; border-color: var(--accent); }
+  select { font: inherit; font-size: .95rem; padding: .15rem .3rem; border: 1px solid #b9c2cd; border-radius: 6px; background: #fff; margin: 0 .15rem; }
+  li.ok input[type=text], li.ok select { border-color: var(--ok); background: var(--ok-soft); }
+  li.ko input[type=text], li.ko select { border-color: var(--ko); background: var(--ko-soft); }
+  li.ok .choices label:has(input:checked) { background: var(--ok); border-color: var(--ok); }
+  li.ko .choices label:has(input:checked) { background: var(--ko); border-color: var(--ko); }
+  .fb { font-family: system-ui, sans-serif; font-size: .88rem; margin-top: .3rem; }
+  .fb .good { color: var(--ok); font-weight: 600; }
+  .fb .bad { color: var(--ko); font-weight: 600; }
+  .fb .hint { color: var(--warn); display: block; margin-top: .15rem; }
+  .bar { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
+  button { font: 600 .9rem/1 system-ui, sans-serif; padding: .6rem 1rem; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; cursor: pointer; }
+  button.ghost { background: #fff; color: var(--accent); }
+  button:hover { filter: brightness(1.08); }
+  .score { font: 700 .95rem system-ui, sans-serif; margin-left: auto; }
+  .model { display: none; margin-top: .5rem; padding: .6rem .8rem; background: #f4f7fa; border-radius: 6px; font-size: .95rem; }
+  .model.show { display: block; }
+  .model .why { color: var(--muted); font-size: .88rem; font-family: system-ui, sans-serif; }
+  .checklist { list-style: none; padding: 0; margin: .4rem 0 0; }
+  .checklist li { margin: .45rem 0; }
+  .checklist label { display: flex; gap: .55rem; align-items: flex-start; cursor: pointer; }
+  .checklist input { margin-top: .35rem; width: 1rem; height: 1rem; flex: none; }
+  .total { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--line); padding: .6rem 1rem;
+    font: 600 .9rem system-ui, sans-serif; text-align: center; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1rem 2rem; }
+  em.en { font-style: italic; }
+  @media (max-width: 560px) { body { font-size: 16px; } header h1 { font-size: 1.4rem; } input[type=text].gap { width: 7rem; } }
+
+  details.box { background:#fff; border:1px solid var(--line); border-radius:10px; margin:.8rem 0; }
+  details.box summary { cursor:pointer; padding:.7rem 1rem; font-weight:600; color:var(--accent); }
+  details.box .body { padding:0 1rem 1rem; }
+  .copie { font-style:italic; color:#3a4654; }
+  .back { color:#fff; font:600 .85rem system-ui,sans-serif; display:inline-block; margin-bottom:.6rem; opacity:.9; }
+  h3.sub { font-size:1.05rem; margin:1.4rem 0 .5rem; }
+  td.ok { background:var(--ok-soft); text-align:center; } td.ko { background:var(--ko-soft); text-align:center; } td.mid { text-align:center; }
+  .plan h4 { margin:.9rem 0 .2rem; font-size:1rem; } .plan ul { margin:.2rem 0; padding-left:1.2rem; }
+  #ex4 textarea, #ex7 textarea { min-height:11rem; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html">← All pages</a>
+  <h1>Summary and essay – your mock exam (AI and education)</h1>
+  <p>This worksheet goes back over your résumé analytique comparatif and your essay from the mock exam. For each one you will find a review of your paper, what was expected and a model plan (explanations in French). Then come seven exercises to practise the method.</p>
+</div></header>
+<nav><div class="wrap">
+  <a href="#sA">A. Résumé</a><a href="#sB">B. Essai</a><a href="#sC">C. Exercises</a>
+</div></nav>
+<main>
+<section id="sA">
+  <h2>A. Résumé analytique comparatif</h2>
+  <h3 class="sub">1. Bilan de ta copie</h3>
+  <div class="rule"><p><b>Note : 6/20.</b> Remarque de ta professeure : « Les principaux enjeux des deux articles sont cernés, mais vous omettez plus de 10 points et votre plan de RAC est à revoir. Certains passages sont mal compris. Les trop nombreuses fautes entraînent de la confusion et impactent considérablement la note. »</p><p><b>La longueur est bonne</b> : 364 mots pour 350 ± 10 % demandés. Le problème n'est donc pas la quantité, mais ce que tu as choisi de dire.</p><p><b>L'introduction ne fait pas son travail.</b> Elle commence par des généralités qui ne sont pas dans les documents (<em>job displacement</em>, <em>work sectors</em>), puis recopie la question. Il faut au contraire présenter les deux documents (nature, source, date, sujet) et répondre déjà à la question avec une problématique.</p><p><b>Le plan suit les documents plus qu'il ne les compare.</b> Tes connecteurs (<em>First of all, Nevertheless, Moreover, Finally</em>) annoncent des idées, mais chaque paragraphe juxtapose une information du document 1 et une du document 2. Un résumé comparatif organise les idées par thème et dit, pour chacune, ce que les deux documents ont en commun et ce qui les distingue.</p><p><b>Plusieurs passages sont mal compris</b> : « <em>we don't know if AI can be a danger for… higher education</em> » (le document 1 dit clairement le contraire) ; « <em>if teachers learn to use AI more than pupils</em> » (Weissman dit qu'il utilise l'IA « <em>more from the teacher side than from the student side</em> », c'est-à-dire pour préparer ses cours).</p><p><b>Les personnes citées ne sont pas présentées</b> : Alex Karp, Lea Pao et Ian Weissman doivent être présentés en quelques mots (<em>Alex Karp, the CEO of Palantir</em>).</p><p><b>Il n'y a pas de conclusion</b> : la copie s'arrête sur « <em>All in all,</em> ».</p></div>
+  <details class="box"><summary>Remarques de ta professeure en marge</summary><div class="body"><ul class="notes"><li>« La méthodologie du RAC n'est pas encore assimilée ! Il ne faut pas recopier la question mais commencer à y répondre. »</li><li>« What do you mean? » (<em>sectors which need to adapt their…</em>)</li><li>« Document mal compris » (<em>very dangerous for pupils and for humanity</em>)</li><li>« Question à poser sur ce point de grammaire » (<em>Others teachers</em>)</li><li>« À reformuler : AI may also be useful to teachers » (<em>AI could teach other things</em>)</li><li>« Si ! Documents mal compris – à reformuler plus clairement » (<em>we don't know if AI can be a danger…</em>)</li><li>« Si vous mentionnez un nom, il faut le présenter » (Alex Karp) ; « De qui s'agit-il ? À présenter » (Ian Weissman)</li><li>« Attention aux temps ! », « très confus ! », « confus ! »</li><li>« À quel passage faites-vous allusion ? Texte mal compris » (<em>prevent about AI dangers for humanity</em>)</li><li>« À préciser » (<em>The AI adaptation depends on the teacher</em>)</li></ul></div></details>
+  <details class="box"><summary>Ta copie</summary><div class="body"><p class="copie">For the past few years, AI has increased for the personal or work world. Yet, many work sectors are threaten of job displacement and there are a lot of sectors which need to adapt their […]. To what extent AI is a threat to the education sector?</p><p class="copie">First of all, IA is a danger for intellectual skills. Document 1 underlines that a lot of university teachers say it is very dangerous for pupils and for humanity. In fact, to Lea Pao, AI allows pupils to cheat with their homework even if it is a personal thinking. Moreover, AI modified the way pupils think and work. Others teachers say that AI provokes effects on cognitive abilities: less abilities to read, analyze, think and to synthetize. Nevertheless, document 2 points out that AI could teach other things. For example, a teacher of Manhattan high school teachs history with AI because he thinks his pupils could better understood the atmosphere of this historical period. Moreover, we don't know if AI can be a danger for some education sectors in higher education.</p><p class="copie">In fact, document 1 underlines that Alex Karp said the sector of humanities can disappear. Other teachers said there would have been a machine-dominated future. Nevertheless other teachers underscores that AI is very useful in sciences. For example in medicine it can cures the cancer. Likewise, Ian Weissman received a price for his AI education, so all the sectors are not threaten to be useless. Ian Weissmann said if teachers learn to used AI more than pupils, they can have good repercussions on pupils.</p><p class="copie">Finally, the most important is how the school can teach with AI. Document 1 shows that some teachers prefer to prevent about AI dangers for humanity and talk about this. Other teachers prefer to show the important of AI criticism to be able to have a critical thinking. And other teachers like Lea Pao prefers to show how can we study without AI. The AI adaptation depends on the teacher. In document 2, we learn that the city's Education Department develops a guide for teachers and pupils to know how can they use AI. (364 words) All in all,</p></div></details>
+  <h3 class="sub">2. Les idées attendues</h3>
+  <p>Voici les idées principales des deux documents, et ce que ta copie en a fait. ✓ = présente ; partiel = évoquée de façon incomplète ou imprécise ; ✗ = absente.</p>
+  <table class="ref"><tr><th>Idée attendue</th><th>Doc</th><th>Ta copie</th><th>Remarque</th></tr><tr><td>L'IA a bouleversé la façon d'apprendre ; les enseignants sont livrés à eux-mêmes, sans normes ni consignes</td><td class="mid">1</td><td class="ko">✗</td><td></td></tr><tr><td>Stratégies « hors ligne » (Lea Pao, Stanford : poèmes appris par cœur, musée), qui ne marchent pas toujours</td><td class="mid">1</td><td class="mid">partiel</td><td>Seulement « <em>how we can study without AI</em> »</td></tr><tr><td>Des étudiants remplacent un travail personnel par l'IA (l'exemple du musée)</td><td class="mid">1</td><td class="mid">partiel</td><td>Réduit à la triche (<em>cheat</em>)</td></tr><tr><td>En sciences, l'IA apporte un gain de productivité ; ses partisans parlent de guérir le cancer</td><td class="mid">1</td><td class="ok">✓</td><td></td></tr><tr><td>Pour les humanités, une menace unique, au-delà de la triche : l'avenir même de l'université en question</td><td class="mid">1</td><td class="ko">✗</td><td>Ta copie dit le contraire (« <em>we don't know if…</em> »)</td></tr><tr><td>Diplômes américains très chers, confiance en baisse : à quoi sert l'université ?</td><td class="mid">1</td><td class="ko">✗</td><td></td></tr><tr><td>S'appuyer sur l'IA est contraire au développement de l'intelligence humaine ; désespoir des professeurs</td><td class="mid">1</td><td class="mid">partiel</td><td>« <em>very dangerous</em> », sans explication</td></tr><tr><td>Question existentielle (Dora Zhang, Berkeley) : que nous fait l'IA en tant qu'espèce ?</td><td class="mid">1</td><td class="ko">✗</td><td></td></tr><tr><td>Premières études : déclin des capacités cognitives, de lecture, d'analyse, de synthèse (Michael Clune)</td><td class="mid">1</td><td class="ok">✓</td><td></td></tr><tr><td>Des universités qui adoptent l'IA (Ohio State) accusées de « s'auto-lobotomiser »</td><td class="mid">1</td><td class="ko">✗</td><td></td></tr><tr><td>Débat sur les humanités : Karp (Palantir) contre Amodei (Anthropic) ; entreprises qui recrutent des diplômés en lettres</td><td class="mid">1</td><td class="mid">partiel</td><td>Karp seulement, sans le présenter</td></tr><tr><td>Risque d'un système à deux vitesses : humanités pour une élite, formation « sans âme » par l'IA pour les autres</td><td class="mid">1</td><td class="ko">✗</td><td>Idée centrale, et lien direct avec l'essai</td></tr><tr><td>Un enseignant sceptique reçoit un prix de 25 000 dollars pour des projets utilisant l'IA</td><td class="mid">2</td><td class="mid">partiel</td><td>Prix mentionné, enseignant non présenté</td></tr><tr><td>L'IA utilisée « du côté de l'enseignant » : projets d'histoire immersifs (conférence de Berlin, tranchées)</td><td class="mid">2</td><td class="ok">✓</td><td></td></tr><tr><td>Un travail long, avec le souci de l'exactitude historique plutôt que de la guerre « en jeu vidéo »</td><td class="mid">2</td><td class="ko">✗</td><td></td></tr><tr><td>Opposition des familles : lycée centré sur l'IA abandonné, pétition pour un moratoire de deux ans</td><td class="mid">2</td><td class="ko">✗</td><td>La menace vue par les parents</td></tr><tr><td>Une régulation en retard (« <em>Wild West</em> ») ; premier guide de la ville pour l'IA</td><td class="mid">2</td><td class="mid">partiel</td><td>Le guide, pas le retard</td></tr><tr><td>L'IA comme « partenaire de réflexion », à condition de ne pas remplacer enseignants et travail des élèves</td><td class="mid">2</td><td class="ko">✗</td><td>Mal compris dans ta copie</td></tr></table>
+  <h3 class="sub">3. Un plan comparatif possible</h3>
+  <p>Le plan est organisé par thème, et chaque partie compare les deux documents. Il est rédigé en anglais pour que tu puisses en reprendre les formulations.</p>
+  <div class="plan"><h4>Introduction</h4><ul class="notes"><li>Present both documents: document 1, an article from <em>The Guardian</em> (March 2026) quoting American humanities professors; document 2, from <em>The New York Times</em> (June 2026), about a Manhattan high school teacher who won a prize for teaching with AI.</li><li>Answer the question at once: both see AI as a real threat, but the danger depends on who controls the tool.</li></ul><h4>I. A threat to learning and thinking</h4><ul class="notes"><li>Doc 1: reliance on AI is incompatible with developing human intelligence; students use it instead of thinking; studies point to a decline in reading, analysis and synthesis (Michael Clune).</li><li>Doc 2: even Ian Weissman, who uses AI, does not want it to replace students' own work.</li><li>Comparison: shared concern, but far more alarmist in doc 1.</li></ul><h4>II. A threat to institutions</h4><ul class="notes"><li>Doc 1 goes further: the purpose of costly university degrees is questioned; the humanities could disappear (Alex Karp, CEO of Palantir) or become the privilege of an elite.</li><li>Doc 2: the threat is felt by families: an AI-focused high school scrapped, a petition for a two-year moratorium.</li><li>Comparison: universities and humanities in doc 1, secondary school and parents in doc 2.</li></ul><h4>III. Yet a useful tool if teachers stay in control</h4><ul class="notes"><li>Doc 1: productivity in the sciences; Daniela Amodei (Anthropic) thinks the humanities will matter more than ever.</li><li>Doc 2: AI used “from the teacher side” enriches lessons (Berlin Conference, World War I trenches).</li><li>Common point: teachers lack guidance (“left to their own devices” / “the Wild West”), despite New York's first AI playbook.</li></ul><h4>Conclusion</h4><ul class="notes"><li>One sentence: AI threatens education less as a technology than as a substitute for thinking, so teachers must stay in charge.</li></ul></div>
+  <details class="box"><summary>A model summary (open it after Exercise 4)</summary><div class="body"><p>Two articles published in 2026 examine how artificial intelligence is affecting education in the United States: document 1, from the British daily The Guardian, reports the views of American university professors in the humanities, while document 2, from The New York Times, portrays a Manhattan high school teacher who won a prize for teaching with AI. Both see AI as a real threat, but suggest that the danger depends on who controls the tool.</p><p>Both documents first present AI as a threat to learning itself. According to the professors interviewed in document 1, relying on AI is incompatible with developing human intelligence: students use it instead of thinking, and early studies point to a decline in their ability to read, analyse and synthesise. Dora Zhang, a literature professor at Berkeley, even wonders what AI is doing “to us as a species”. Even Ian Weissman, the teacher in document 2, is uncomfortable with the idea of AI replacing students' own work.</p><p>The threat also concerns institutions. Document 1 goes further, suggesting that the very purpose of expensive American degrees is in question and that the humanities could disappear, as Alex Karp, the CEO of Palantir, predicts, or survive only for an elite while others receive “soulless” training from AI instructors. In document 2, the threat is felt by families: in New York, plans for an AI-focused high school were scrapped after parents called for a two-year moratorium.</p><p>However, neither document sees AI as an inevitable danger. Scientists praise its “productivity boost”, and Daniela Amodei, the president of Anthropic, believes the humanities will matter more than ever. Document 2 shows that AI used “from the teacher side” can enrich lessons, letting students question figures from the Berlin Conference or experience the trenches of World War I, even if such projects take time and must respect historical accuracy. Yet both stress that teachers lack guidance: professors are left “to their own devices”, and Weissman calls regulation “the Wild West”.</p><p>AI therefore threatens education less as a technology than as a substitute for thinking, which is why both documents want teachers to stay in charge.</p></div></details>
+</section>
+<section id="sB">
+  <h2>B. Essai</h2>
+  <p><em>Sujet : « Do you agree that AI could deepen inequality in education? » (500 mots ± 10 %, avec des exemples du monde anglophone).</em></p>
+  <h3 class="sub">1. Bilan de ta copie</h3>
+  <div class="rule"><p><b>Note : 5/20.</b> Remarque de ta professeure : « Les enjeux du sujet sont cernés, mais votre essai est beaucoup trop court ! Attention à la gestion du temps ! Les trop nombreuses fautes et maladresses entraînent de la confusion et impactent très lourdement la note. Copie à retravailler. »</p><p><b>La longueur</b> : le sujet demande 500 mots ± 10 %, soit au moins 450 ; ta copie en compte environ 250, et le nombre de mots n'est pas indiqué. À lui seul, c'est un handicap très lourd : il faut réserver au moins 1 h 30 à l'essai sur les 4 heures.</p><p><b>L'introduction</b> n'a ni accroche ni problématique : « <em>AI has increased in our way to learn</em> » est confus, puis tu donnes ton avis tout de suite (« <em>For me AI could deepen inequality</em> »), sans transition.</p><p><b>Les arguments sont pertinents</b> (fracture numérique, inégalité dans l'accompagnement à l'école, dépendance), mais ils reposent uniquement sur les documents 3 et 4, qu'ils paraphrasent. La consigne dit au contraire de réagir au dossier « sans paraphraser celui-ci ».</p><p><b>Il manque des exemples du monde anglophone</b> : la consigne exige des exemples « culturels, civilisationnels et/ou historiques du monde anglophone ». Ta copie n'en contient aucun.</p><p><b>Il manque une nuance</b> : on attend aussi l'argument inverse (l'IA peut réduire les inégalités, avec un tuteur personnel pour tous), puis une prise de position argumentée.</p><p><b>La conclusion</b> se réduit à une phrase inachevée et confuse.</p></div>
+  <details class="box"><summary>Remarques de ta professeure en marge</summary><div class="body"><ul class="notes"><li>« ?? Confus ! → <em>AI has upended education since 2022</em> » (première phrase)</li><li>« Il manque une transition entre ces deux points »</li><li>« Relisez-vous ! » (<em>where are you leaving</em>)</li><li>« <em>However</em> » à la place de <em>Although</em> ; « <em>the internet</em> », « <em>modern technologies</em> »</li><li>« CAN + BV » (<em>can creates</em>)</li><li>« Confus ! » (<em>with an using explication in school</em>)</li><li>« Très confus ! » (conclusion)</li><li>« Il faut indiquer le nombre de mots ! Trop court ! Attention à la gestion du temps ! »</li></ul></div></details>
+  <details class="box"><summary>Ta copie</summary><div class="body"><p class="copie">AI has increased in our way to learn since 2022. It has been a revolution in our society. To use AI, you just need a computer, a connexion and that's it. For me AI could deepen inequality in education.</p><p class="copie">First of all, as showed in document 4, the access to AI depends on where are you leaving. For example, it depends on which country are you leaving. It depends on which part of your country you are leaving. Document 4 is a cartoon which separate two pupils. One leaves in a city and one leaves in the countryside. We can see, the first one has access to wifi, connexion and has a computer, so he can use AI. Although, the other kid doesn't have access to internet and technologies so he learns with old books. Nonetheless, it is essential to have access to AI for learning. AI creates inequalities between people with connexion and without connexion.</p><p class="copie">Moreover, AI can creates inequalities between pupils in the same city. In fact, document 3 shows that some pupils have access to AI with an using explication in school while others have not this explication. So some students can become dependance on AI while other students can use it a smarter way. The school explications about AI can have an impact the future employability of the pupils. In fact some students use AI for their homeworks, for thinking so they don't learn something.</p><p class="copie">All in all, […] education can […] created by AI.</p></div></details>
+  <h3 class="sub">2. Un plan détaillé possible</h3>
+  <div class="plan"><h4>Introduction (≈ 80 words)</h4><ul class="notes"><li>Hook: in 2023, Khan Academy launched Khanmigo, an AI tutor meant to give every pupil the kind of personal help once reserved for the wealthy.</li><li>Problématique: will AI, like many technologies before it, mainly benefit those who are already advantaged, or can it become a tool for equal opportunity?</li><li>Announce the plan.</li></ul><h4>I. Yes: AI risks deepening existing inequalities (≈ 170 words)</h4><ul class="notes"><li>The digital divide: devices and connection. Example: the “homework gap” revealed when American schools closed during the Covid-19 pandemic (pupils doing homework in fast-food car parks to use the wifi).</li><li>Unequal guidance: pupils who are taught to use AI critically and those left alone with it. Example: the “Matthew effect” described by the American sociologist Robert Merton: advantages accumulate for the advantaged.</li><li>A two-tier education: human teachers for an elite, AI for the rest. Example: the gap between Britain's private schools, such as Eton, and state schools.</li></ul><h4>II. But AI could also reduce inequality (≈ 170 words)</h4><ul class="notes"><li>A personal tutor for everyone. Example: Benjamin Bloom's “2 sigma problem” (1984): pupils tutored one-to-one do far better than pupils taught in a class; AI tutors could make this affordable.</li><li>Help for pupils who struggle: explanations at their own pace, translation, accessibility for pupils with disabilities.</li><li>History shows that technology plus public policy can widen access to knowledge. Examples: Andrew Carnegie's public libraries in the United States and Britain; the Elementary Education Act of 1870 in England.</li></ul><h4>Conclusion (≈ 80 words)</h4><ul class="notes"><li>Answer the question: AI could deepen inequality, but it does not have to; it is an amplifier.</li><li>What makes the difference: equipment for all, AI literacy taught at school, teachers kept at the centre.</li><li>Opening: the real question is political rather than technological.</li></ul></div>
+  <details class="box"><summary>A model introduction (open it after Exercise 5)</summary><div class="body"><p>In 2023, Khan Academy launched Khanmigo, an AI tutor meant to give every pupil the kind of personal help once reserved for the wealthy. Yet access to computers, connections and good teaching is far from equal. Will AI, like many technologies before it, mainly benefit those who are already advantaged, or can it become a tool for equal opportunity? While AI may well deepen existing inequalities, it could also reduce them, provided that schools and governments make it accessible to all.</p></div></details>
+  <h3 class="sub">3. La langue</h3>
+  <p>Les erreurs de langue de ces deux copies sont pour la plupart déjà travaillées dans la fiche de grammaire : modal + base verbale (<em>can creates, can cures, could better understood, how to used</em>), propositions en wh- (<em>where are you living, how can we study, how can they use</em>), accords (<em>others teachers, less abilities, homeworks, he teachs</em>), prépositions (<em>an impact the, in a smarter way</em>), gallicismes (<em>connexion, explication, IA, a price</em>).</p><p><b>Nouveaux points</b> : <em>however</em> (= cependant) et non <em>although</em> (= bien que) en début de phrase ; <em>the internet</em> avec l'article ; <em>the importance of</em> (nom) et non <em>the important of</em> ; <em>claim that</em> pour rapporter une opinion ; attention aux temps du discours rapporté (<em>Other teachers think there could be…</em>, et non <em>said there would have been</em>).</p>
+</section>
+<section id="sC">
+  <h2>C. Exercises</h2>
+  <div class="ex" id="ex1"></div><div class="ex" id="ex2"></div><div class="ex" id="ex3"></div><div class="ex" id="ex4"></div><div class="ex" id="ex5"></div><div class="ex" id="ex6"></div><div class="ex" id="ex7"></div>
+</section>
+</main>
+<div class="total" id="total">Total score: –</div>
+<footer>Your answers are saved in this browser. <button class="ghost" id="resetAll" style="margin-left:.4rem">Clear all</button></footer>
+<script>
+const EX = [{"id": "ex1", "title": "Exercise 1", "type": "choice", "consigne": "Résumé: which document says this? Choose Document 1, Document 2, Both or Neither.", "items": [{"before": "Teachers have been left without clear rules or guidance on AI. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 2, "after": "", "why": "Doc 1 : « left to their own devices », « few standards and little guidance » ; doc 2 : « the Wild West »."}, {"before": "A tech CEO predicts that AI will destroy jobs in the humanities. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 0, "after": "", "why": "Alex Karp, CEO de Palantir."}, {"before": "A teacher won a prize for classroom projects using AI. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 1, "after": ""}, {"before": "Many work sectors are threatened by job displacement. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 3, "after": "", "why": "C'était ton introduction : aucun des deux documents ne le dit."}, {"before": "Relying on AI may weaken students' ability to read and analyse. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 0, "after": "", "why": "Michael Clune et les premières études."}, {"before": "Families have asked for a pause on generative AI in schools. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 1, "after": "", "why": "La pétition pour un moratoire de deux ans."}, {"before": "AI may create a two-tier education system. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 0, "after": "", "why": "Dora Zhang : une élite d'un côté, une formation « sans âme » de l'autre."}, {"before": "A teacher is uncomfortable with the idea of AI replacing human teachers. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 1, "after": "", "why": "Ian Weissman, à la fin du document 2."}, {"before": "AI can boost productivity in the sciences. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 0, "after": ""}, {"before": "Students can question AI versions of historical figures. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 1, "after": "", "why": "Le projet sur la conférence de Berlin."}, {"before": "It is not yet known whether AI is a danger for higher education. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 3, "after": "", "why": "C'était ta copie : le document 1 dit clairement que c'en est un."}, {"before": "A student used AI instead of doing a personal assignment. ", "opts": ["Document 1", "Document 2", "Both", "Neither"], "a": 0, "after": "", "why": "L'exemple du musée fermé le lundi."}]}, {"id": "ex2", "title": "Exercise 2", "type": "choice", "consigne": "Résumé: choose the right word or phrase to compare the documents.", "items": [{"before": "", "opts": ["Whereas", "Both", "Likewise"], "a": 0, "after": " document 1 focuses on universities, document 2 deals with a high school."}, {"before": "", "opts": ["Each", "Both", "Unlike"], "a": 1, "after": " documents point out that teachers lack guidance."}, {"before": "", "opts": ["Similarly", "Whereas", "Unlike"], "a": 2, "after": " the professors in document 1, Ian Weissman uses AI in class."}, {"before": "Document 1 ", "opts": ["goes further", "goes on", "goes beyond"], "a": 0, "after": " by suggesting that the humanities could disappear."}, {"before": "Weissman, ", "opts": ["also", "too", "as well as"], "a": 1, "after": ", worries about AI replacing students' own work."}, {"before": "", "opts": ["Like", "Such as", "As"], "a": 2, "after": " document 2 shows, AI can enrich lessons."}, {"before": "The threat is felt by parents ", "opts": ["as much", "as well as", "also"], "a": 1, "after": " by teachers."}, {"before": "Document 2, ", "opts": ["on the contrary", "in the opposite", "on the other hand"], "a": 2, "after": ", gives a more positive view."}]}, {"id": "ex3", "title": "Exercise 3", "type": "choice", "consigne": "Résumé: always introduce the people you mention. Choose the right description.", "items": [{"before": "Lea Pao, ", "opts": ["a literature professor at Stanford University", "a social studies teacher in Manhattan", "the president of Anthropic"], "a": 0, "after": ""}, {"before": "Alex Karp, ", "opts": ["New York City's schools chancellor", "the co-founder and CEO of Palantir", "a literature professor at Berkeley"], "a": 1, "after": ""}, {"before": "Daniela Amodei, ", "opts": ["a literature professor and novelist", "a high school teacher", "the president and co-founder of Anthropic"], "a": 2, "after": ""}, {"before": "Ian Weissman, ", "opts": ["a social studies teacher in Manhattan", "the CEO of Palantir", "a professor at Ohio State University"], "a": 0, "after": ""}, {"before": "Michael Clune, ", "opts": ["New York City's mayor", "a literature professor and novelist", "a teacher at Stanford"], "a": 1, "after": ""}, {"before": "Dora Zhang, ", "opts": ["a teacher in the Bronx", "the head of the Education Department", "a literature professor at the University of California, Berkeley"], "a": 2, "after": ""}, {"before": "Kamar Samuels, ", "opts": ["New York City's schools chancellor", "a novelist", "the co-founder of Anthropic"], "a": 0, "after": ""}]}, {"id": "ex4", "title": "Exercise 4", "type": "translate", "consigne": "Résumé: rewrite your introduction. Present both documents and answer the question in one or two sentences (about 70 words).", "items": [{"q": "Your introduction: « For the past few years, AI has increased for the personal or work world. Yet, many work sectors are threaten of job displacement and there are a lot of sectors which need to adapt their […]. To what extent AI is a threat to the education sector? »", "m": "Two articles published in 2026 examine how artificial intelligence is affecting education in the United States: document 1, from the British daily The Guardian, reports the views of American university professors in the humanities, while document 2, from The New York Times, portrays a Manhattan high school teacher who won a prize for teaching with AI. Both see AI as a real threat, but suggest that the danger depends on who controls the tool.", "why": "nature, source et date des documents ; leur sujet ; une réponse à la question, sans la recopier."}]}, {"id": "ex5", "title": "Exercise 5", "type": "choice", "consigne": "Essay: which of these makes the best problématique for the subject? Choose one.", "items": [{"before": "", "opts": ["Do you agree that AI could deepen inequality in education?", "Will AI mainly benefit pupils who are already advantaged, or can it become a tool for equal opportunity?", "What is artificial intelligence, and how does it work?"], "a": 1, "after": "", "why": "La première recopie le sujet ; la troisième sort du sujet. La deuxième ouvre un vrai débat, que le plan va traiter."}]}, {"id": "ex6", "title": "Exercise 6", "type": "choice", "consigne": "Essay: match each argument with an example from the English-speaking world.", "items": [{"before": "Unequal access to devices and the internet → ", "opts": ["the “homework gap” revealed by school closures during the Covid-19 pandemic", "Bloom's “2 sigma problem”", "the Elementary Education Act of 1870"], "a": 0, "after": ""}, {"before": "One-to-one tutoring is the most effective way to learn → ", "opts": ["Andrew Carnegie's public libraries", "Bloom's “2 sigma problem” (1984)", "the “Matthew effect”"], "a": 1, "after": ""}, {"before": "AI tutors could make tutoring affordable for all → ", "opts": ["the gap between Eton and state schools", "the Elementary Education Act of 1870", "Khan Academy's AI tutor, Khanmigo (2023)"], "a": 2, "after": ""}, {"before": "Advantages tend to accumulate for those who are already advantaged → ", "opts": ["the “Matthew effect” described by Robert Merton", "Khanmigo", "the “homework gap”"], "a": 0, "after": ""}, {"before": "Technology plus public investment can widen access to knowledge → ", "opts": ["Bloom's “2 sigma problem”", "Andrew Carnegie's public libraries", "the “Matthew effect”"], "a": 1, "after": ""}, {"before": "Education can be split between an elite and the rest → ", "opts": ["Khanmigo", "Andrew Carnegie's public libraries", "the gap between Britain's private schools, such as Eton, and state schools"], "a": 2, "after": ""}]}, {"id": "ex7", "title": "Exercise 7", "type": "translate", "consigne": "Essay: rewrite this paragraph from your essay (about 100 words). Start with a clear topic sentence, use an example from the English-speaking world, and do not paraphrase the documents.", "items": [{"q": "Your paragraph: « First of all, as showed in document 4, the access to AI depends on where are you leaving. For example, it depends on which country are you leaving. […] AI creates inequalities between people with connexion and without connexion. »", "m": "First of all, AI is likely to widen the gap between pupils who have access to technology and those who do not. To use an AI tutor, a pupil needs a computer and a reliable internet connection, which many families still cannot afford. The Covid-19 pandemic made this painfully clear: when American schools closed in 2020, some pupils had to do their homework in fast-food car parks to use the free wifi, a situation known as the “homework gap”. If AI becomes central to learning, these pupils will fall even further behind.", "why": "phrase d'annonce claire ; un exemple du monde anglophone ; pas de paraphrase des documents ; *live*, *the internet*, *connection*."}]}];
+/* ---------- Outils ---------- */
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem('rac-' + k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('rac-' + k, JSON.stringify(v)); } catch (e) {} },
+  clear() { try { Object.keys(localStorage).filter(k => k.startsWith('rac-')).forEach(k => localStorage.removeItem(k)); } catch (e) {} },
+};
+function norm(s) {
+  return (s || '').toLowerCase()
+    .replace(/[‘’ʼ`´]/g, "'").replace(/[“”]/g, '"')
+    .replace(/\bcan't\b/g, 'cannot').replace(/\bcan not\b/g, 'cannot')
+    .replace(/\bdon't\b/g, 'do not').replace(/\bdoesn't\b/g, 'does not').replace(/\bdidn't\b/g, 'did not')
+    .replace(/\bisn't\b/g, 'is not').replace(/\baren't\b/g, 'are not').replace(/\bwon't\b/g, 'will not')
+    .replace(/\bit's\b/g, 'it is').replace(/\bshouldn't\b/g, 'should not').replace(/\bcouldn't\b/g, 'could not')
+    .replace(/[.,;:!?"()]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const scores = {};
+
+/* ---------- Rendu ---------- */
+function render(ex) {
+  const box = document.getElementById(ex.id);
+  const saved = store.get(ex.id) || {};
+  let h = `<h3>${ex.title}</h3><p class="consigne">${ex.consigne}</p><ol class="items">`;
+  ex.items.forEach((it, i) => {
+    const v = saved[i];
+    if (ex.type === 'rewrite') {
+      const val = v != null ? v : (ex.prefill ? it.start : '');
+      h += `<li data-i="${i}"><span class="prompt">${esc(it.q)}</span>
+        <input type="text" autocomplete="off" spellcheck="false" value="${esc(val)}"><div class="fb"></div></li>`;
+    } else if (ex.type === 'choice') {
+      h += `<li data-i="${i}">${esc(it.before)}<span class="choices">` +
+        it.opts.map((o, j) => `<label><input type="radio" name="${ex.id}-${i}" value="${j}" ${v == j ? 'checked' : ''}><span>${esc(o)}</span></label>`).join('') +
+        `</span>${esc(it.after)}<div class="fb"></div></li>`;
+    } else if (ex.type === 'gap') {
+      h += `<li data-i="${i}">${esc(it.before)} ${it.hint ? `<em>${esc(it.hint)}</em>` : ''}
+        <input type="text" class="gap" ${ex.wide ? 'style="width:12rem"' : ''} autocomplete="off" spellcheck="false" value="${esc(v || '')}"> ${esc(it.after)}<div class="fb"></div></li>`;
+    } else if (ex.type === 'article') {
+      let s = '';
+      it.parts.forEach((p, k) => {
+        s += esc(p);
+        if (k < it.parts.length - 1) {
+          const cur = v ? v[k] : '';
+          const cap = k === 0 && p === '';
+          s += `<select data-k="${k}"><option value="">…</option><option value="Ø" ${cur === 'Ø' ? 'selected' : ''}>Ø</option><option value="the" ${cur === 'the' ? 'selected' : ''}>${cap ? 'The' : 'the'}</option></select>`;
+        }
+      });
+      h += `<li data-i="${i}">${s}<div class="fb"></div></li>`;
+    } else if (ex.type === 'translate') {
+      h += `<li data-i="${i}"><span class="prompt">${esc(it.q)}</span>
+        <textarea spellcheck="false">${esc(v || '')}</textarea>
+        <div class="model"><div>${it.m}</div><div class="why">Points to check: ${it.why}</div></div></li>`;
+    }
+  });
+  h += '</ol><div class="bar">';
+  if (ex.type === 'translate') {
+    h += `<button data-act="show">Show a model answer</button><button class="ghost" data-act="reset">Clear</button>`;
+  } else {
+    h += `<button data-act="check">Check</button><button class="ghost" data-act="solution">Show answers</button><button class="ghost" data-act="reset">Clear</button><span class="score"></span>`;
+  }
+  h += '</div>';
+  box.innerHTML = h;
+
+  box.addEventListener('input', () => save(ex));
+  box.addEventListener('change', () => save(ex));
+  box.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); check(ex); } });
+  box.querySelector('.bar').addEventListener('click', e => {
+    const act = e.target.dataset.act; if (!act) return;
+    if (act === 'check') check(ex);
+    if (act === 'solution') check(ex, true);
+    if (act === 'show') box.querySelectorAll('.model').forEach(m => m.classList.toggle('show'));
+    if (act === 'reset') { store.set(ex.id, {}); delete scores[ex.id]; render(ex); updateTotal(); }
+  });
+}
+
+function read(ex, li) {
+  if (ex.type === 'rewrite' || ex.type === 'gap') return li.querySelector('input').value;
+  if (ex.type === 'translate') return li.querySelector('textarea').value;
+  if (ex.type === 'choice') { const r = li.querySelector('input:checked'); return r ? +r.value : null; }
+  if (ex.type === 'article') return [...li.querySelectorAll('select')].map(s => s.value);
+}
+function save(ex) {
+  const box = document.getElementById(ex.id), data = {};
+  box.querySelectorAll('li[data-i]').forEach(li => data[li.dataset.i] = read(ex, li));
+  store.set(ex.id, data);
+}
+
+function check(ex, reveal = false) {
+  const box = document.getElementById(ex.id);
+  let ok = 0;
+  box.querySelectorAll('li[data-i]').forEach(li => {
+    const it = ex.items[li.dataset.i], v = read(ex, li), fb = li.querySelector('.fb');
+    let good = false, expected = '', hint = '';
+    if (ex.type === 'rewrite') {
+      good = it.a.some(a => norm(a) === norm(v));
+      expected = it.a[0];
+      if (ex.noQuestionMark && /\?\s*$/.test(v)) { good = false; hint = 'Pas de point d’interrogation : ce n’est pas une question.'; }
+      if (ex.needQuestionMark && good && !/\?\s*$/.test(v)) hint = 'N’oublie pas le point d’interrogation.';
+    } else if (ex.type === 'gap') {
+      good = it.a.some(a => norm(a) === norm(v)); expected = it.a.join(' / ');
+    } else if (ex.type === 'choice') {
+      good = v === it.a; expected = it.opts[it.a];
+    } else if (ex.type === 'article') {
+      good = it.a.every((a, k) => v[k] === a); expected = it.a.join(' … ');
+    }
+    if (good) ok++;
+    li.classList.toggle('ok', good); li.classList.toggle('ko', !good);
+    const empty = v == null || (typeof v === 'string' && !v.trim()) || (Array.isArray(v) && v.some(x => !x));
+    if (good) fb.innerHTML = `<span class="good">✓ Correct</span>` + (it.why ? ` – ${it.why}` : '') + (hint ? `<span class="hint">${hint}</span>` : '');
+    else if (reveal || !empty) fb.innerHTML = `<span class="bad">✗</span> ${reveal || !empty ? 'Expected answer: <b>' + esc(expected) + '</b>' : ''}` + (it.why ? ` – ${it.why}` : '') + (hint ? `<span class="hint">${hint}</span>` : '');
+    else fb.innerHTML = `<span class="bad">Not answered</span>`;
+  });
+  scores[ex.id] = [ok, ex.items.length];
+  box.querySelector('.score').textContent = `${ok} / ${ex.items.length}`;
+  updateTotal();
+}
+function updateTotal() {
+  const v = Object.values(scores);
+  if (!v.length) { document.getElementById('total').textContent = 'Total score: –'; return; }
+  const ok = v.reduce((a, b) => a + b[0], 0), n = v.reduce((a, b) => a + b[1], 0);
+  document.getElementById('total').textContent = `Total score (checked exercises): ${ok} / ${n}`;
+}
+
+/* Listes de méthode */
+document.querySelectorAll('.checklist').forEach(ul => {
+  const k = ul.dataset.key, saved = store.get(k) || [];
+  const boxes = ul.querySelectorAll('input');
+  boxes.forEach((b, i) => { b.checked = !!saved[i]; b.addEventListener('change', () => store.set(k, [...boxes].map(x => x.checked))); });
+});
+
+EX.forEach(render);
+document.getElementById('resetAll').addEventListener('click', () => {
+  if (!confirmReset()) return;
+  store.clear(); for (const k in scores) delete scores[k];
+  EX.forEach(render); document.querySelectorAll('.checklist input').forEach(b => b.checked = false); updateTotal();
+});
+function confirmReset() {
+  const b = document.getElementById('resetAll');
+  if (b.dataset.armed) { delete b.dataset.armed; b.textContent = 'Clear all'; return true; }
+  b.dataset.armed = '1'; b.textContent = 'Click again to confirm';
+  setTimeout(() => { delete b.dataset.armed; b.textContent = 'Clear all'; }, 3000);
+  return false;
+}
+</script>
+</body>
+</html>
